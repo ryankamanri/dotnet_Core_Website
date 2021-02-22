@@ -1,0 +1,90 @@
+﻿
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ryan Kamanri</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="font-family:DengXian;background-color:mintcream;opacity:0">
+    <header style="background-color:lightcyan; width:100%; position:fixed;top:0;opacity:1">
+        <nav style="background-color:rgb(255, 255, 255,0.1)" class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow">
+            <div class="container">
+                <a class="navbar-brand" asp-area="" asp-page="/Index" >主頁</a>
+                <button style="border-color:rgba(255,255,255,0);" class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Blogs/Index">博客</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Posts/Index" >帖子</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Files/Index" >文件</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Upload/Index">上傳</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Self/README" >説明</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container" style="background-color:white;box-shadow: 1px 1px 1px 1px lightgrey;border-radius:5px;margin-top:75px">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*<footer class="border-top footer text-muted">*@
+    <footer class="footer text-muted">
+        <div class="container">
+            &copy; 2020 - Ryan Kamanri
+        </div>
+    </footer>
+
+    <script>
+        window.onload = () => {
+            $("body").animate({
+                opacity:1
+            })
+            onloadFilesIndex();
+        }
+        window.onmousewheel = event => {
+            if (event.deltaY > 0) {
+                
+                $("header").animate({
+                    opacity: 0
+                });
+            } else if (event.deltaY < 0) {
+                
+                $("header").animate({
+                    opacity: 1
+                });
+            }
+        }
+        var nav = document.getElementsByTagName("nav")[0];
+        nav.onmouseover = () => {
+            $("header").animate({
+                opacity: 1
+            });
+        }
+        
+    </script>
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

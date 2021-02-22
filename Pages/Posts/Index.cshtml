@@ -1,0 +1,46 @@
+﻿@page
+@model WebApplication1.Pages.Posts.IndexPostModel
+
+@{
+    ViewData["Title"] = "帖子";
+}
+
+
+
+    <form>
+        <div >
+            <input type="text" asp-for="SearchString" class="form-control" style="display:inline;width:30%;height:35px;margin-top:10px;margin-bottom:10px" placeholder="搜索帖子..." />
+            <input type="submit" value="搜索" class="btn btn-outline-primary" style="margin-top:7px;margin-bottom:10px" />
+        </div>
+        @*<p>
+            <select asp-for="Class" asp-items="Model.Classes">
+                <option value="">All</option>
+                <option value="2019"></option>
+                <option value="2018"></option>
+            </select>
+        </p>*@
+    </form>
+<table class="table">
+    <tbody>
+@foreach (var item in Model.Post) {
+        <tr style="height:120px">
+            <td>
+                <a style="text-decoration:none;font-size:18px;font-weight:500" asp-page="./Details" asp-route-id="@item.ID">@Html.DisplayFor(modelItem => item.Title)</a>
+                <br /><br /><br />
+                <span style="margin-top:5px;position:relative;top:35px;left:100%">@Html.DisplayFor(modelItem => item.Sender)</span>
+                <div class="grey-font">
+                    "@Html.DisplayFor(modelItem => item.CoTitle)"
+                </div>
+
+            </td>
+        <td style="width:20%">
+           
+        </td>
+         </tr>
+}
+    </tbody>
+</table>
+
+<p style="text-align:end">
+    <a asp-page="CreatePost"class="btn btn-primary">发帖</a>
+</p>

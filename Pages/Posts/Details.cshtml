@@ -1,0 +1,77 @@
+﻿@page
+@model WebApplication1.Pages.Posts.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+<br />
+<a asp-page="./Index" style="text-decoration:none">◀ 返回</a>
+<br /><br />
+
+<div>
+    <h3 style="text-align:center">@Html.DisplayFor(model => model.Post.Title)</h3>
+    <h6 style="text-align:center">@Html.DisplayFor(model => model.Post.CoTitle)</h6>
+    <hr />
+
+    <div style="margin: 4px 10% 4px 10%;white-space:pre-line">
+        @Model.Post.Text
+    </div>
+
+    <br /><br />
+
+</div>
+
+<dl class="row" style="margin-left:70%">
+    <dt class="col-sm-5">
+        @Html.DisplayNameFor(model => model.Post.Sender)
+    </dt>
+    <dd class="col-sm-5">
+        @Html.DisplayFor(model => model.Post.Sender)
+    </dd>
+</dl>
+
+<br />
+<h6>Comments 评论</h6>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in Model.Comments)
+        {
+            <tr style="height:100px">
+                <td>
+                    <div style="text-decoration:none;font-size:15px;font-weight:500" >@Html.DisplayFor(modelItem => item.Commentator) : </div>
+                    <br />
+                    <div class="grey-font">@Html.DisplayFor(modelItem => item.Content)</div>
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>
+
+        <div class="row">
+            <form method="post" style="width:100%">
+                <div class="col-md-4">
+
+
+                    <div class="form-group">
+                        <label asp-for="Comment.Commentator" class="control-label"></label>
+                        <input asp-for="Comment.Commentator" class="form-control" />
+                        <span asp-validation-for="Comment.Commentator" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label asp-for="Comment.Content" class="control-label"></label>
+                        <textarea asp-for="Comment.Content" class="form-control"></textarea>
+                        <span asp-validation-for="Comment.Content" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="发布" class="btn btn-primary" style="margin-left:15px" />
+                </div>
+            </form>
+        </div>
+
+
+
+

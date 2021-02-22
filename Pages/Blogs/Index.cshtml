@@ -1,0 +1,22 @@
+﻿@page
+@model WebApplication1.Pages.Blogs.IndexModel
+@{
+    ViewData["Title"] = "博客";
+}
+    <br />
+    <div class="form-control" id="blog" style="height: auto;" contenteditable="true" >这是一块尚未开垦的试验田(可粘贴图片)</div>
+    @*<input type="button" class="btn btn-primary" onclick="my_submit()">*@
+
+
+
+@*<script>
+    function my_submit(){
+        var blog = document.getElementById("blog");
+        var formData = new FormData();
+        formData.append(blog);
+        var request = new XMLHttpRequest();
+
+        request.open("post","/");
+        request.send(formData);
+    }
+</script>*@

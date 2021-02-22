@@ -1,0 +1,101 @@
+﻿@page
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@model WebApplication1.Pages.Upload.IndexModel
+@{
+    ViewData["Title"] = "上传";
+}
+<br />
+<h3>上传列表</h3><br />
+
+
+@*<form  method="post" enctype="multipart/form-data" asp-page-handler="Upload" >
+        <input type="file" name="file" id="file" value="请选择上传文件" /><br /><br />
+        <input class="alert-primary" type="submit" value="上传" />
+    </form>*@
+
+<form enctype="multipart/form-data" asp-page-handler="Upload" id="uploadForm">
+    <input type="file" name="file" id="file" /><br /><br />
+    <input class="btn btn-primary" type="button" value="提交" onclick="upload_A()" />
+</form>
+<table class="table" >
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.newFile.FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.newFile.Length)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.newFile.LastWriteTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.newFile.VirtualRoute)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="tbody">
+
+    </tbody>
+</table>
+
+<script>
+        function upload_A() {
+            var request = new XMLHttpRequest();@*定义http请求报文对象*@
+            var form = document.getElementById("uploadForm");@*获取form表单*@
+            var formData = new FormData(form);@*构造报文中的表单对象*@
+            
+
+            if (document.getElementById("file").value == "") {
+                alert("请选择文件"); return;
+            }
+
+            request.open("POST", "/Upload?handler=Upload", true);@*打开连接*@
+            request.send(formData);@*发送数据*@
+
+            request.onreadystatechange = () => {
+                if (request.readyState == 4) {
+                    if (request.status != 200) { alert("上传失败,无法连接至服务器"); return; }
+                    else if (request.responseText == "405") { alert("上传失败,服务器内部错误"); return; }
+                    else {
+                        alert("上传成功");
+                        var tempFileInfo = unescape(request.responseText.replace(/\\u/g, "%u")).split("\"")@*json转换为string[]*@
+                        @*1.后台传过来的字符串为'\uXXXX'的unicode形式,而js只能处理'%uXXXX'的形式,所以需要把'\'变为'%'
+                        2.这里由于js中的replace方法对字符串只能替换第一个'\',故采用正则表达式/X/g形式表示替换所有字符
+                            *@
+                        var tr = document.createElement("tr");
+                        var tdFileName = document.createElement("td");
+                        var tdLength = document.createElement("td");
+                        var tdLastWriteTime = document.createElement("td");
+                        var tdVirtualRoute = document.createElement("td");
+                        tdFileName.innerHTML = tempFileInfo[1];
+                        tdLength.innerHTML = tempFileInfo[2];
+                        tdLastWriteTime.innerHTML =  tempFileInfo[3];
+                        tdVirtualRoute.innerHTML = tempFileInfo[4];
+                        tr.appendChild(tdFileName);
+                        tr.appendChild(tdLength);
+                        tr.appendChild(tdLastWriteTime);
+                        tr.appendChild(tdVirtualRoute)
+                        document.getElementById("tbody").appendChild(tr);
+
+                    }
+                }
+
+            };
+        }
+        @*function upload_B() {
+            var req = new XMLHttpRequest();
+            var file = document.getElementById("file");
+            req.open("POST", "/Upload?handler=Upload", true);
+            req.setRequestHeader("Host", "@@IndexModel.thisURL");
+            req.setRequestHeader("Connection", "keep-alive");
+            req.setRequestHeader("Content-type", "application/octet-stream");
+            req.setRequestHeader("Content-Disposition", "form-data;name='file';filename=" + file.files[0])
+            req.setRequestHeader("Content-Length", file.files[0].size);
+            req.setRequestHeader("boundary", "This_is_a_boundary_used_to_devide_data_to_several_parts");
+            req.setRequestHeader("RequestVerificationToken", "@@Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken");
+        }*@
+
+
+</script>

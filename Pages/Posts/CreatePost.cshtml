@@ -1,0 +1,67 @@
+﻿@page
+@model WebApplication1.Pages.Posts.CreatePostModel
+
+@{
+    ViewData["Title"] = "发帖";
+}
+<br />
+<h3>发布一个帖子</h3>
+<br />
+<h6>发帖人信息</h6>
+<hr />
+<form method="post">
+    <div class="row">
+        <div class="col-md-4">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Post.Sender" class="control-label"></label>
+                <input asp-for="Post.Sender" class="form-control" />
+                <span asp-validation-for="Post.Sender" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.Password" class="control-label"></label>
+                <input type="password" asp-for="Post.Password" class="form-control" />
+                <span asp-validation-for="Post.Password" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <br />
+    <h6>帖子信息</h6>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+
+
+            <div class="form-group">
+                <label asp-for="Post.Title" class="control-label"></label>
+                <input asp-for="Post.Title" class="form-control" placeholder="在这里输入标题" />
+                <span asp-validation-for="Post.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CoTitle" class="control-label"></label>
+                <input asp-for="Post.CoTitle" class="form-control" placeholder="在这里输入附标题 ps : 对标题的补充"/>
+                <span asp-validation-for="Post.CoTitle" class="text-danger"></span>
+            </div>
+            </div>
+        <div class="col-md-8">
+            <div class="form-group">
+                <label asp-for="Post.Text" class="control-label"></label>
+                <textarea asp-for="Post.Text" class="form-control" style="height:300px" placeholder="在这里输入正文发表心情或想法~"></textarea>
+                <span asp-validation-for="Post.Text" class="text-danger"></span>
+            </div>
+           </div>
+
+        </div>
+    <div class="form-group" style="text-align:end">
+        <input type="submit" value="发帖" class="btn btn-primary" />
+    </div>
+</form>
+
+<div style="text-align:end">
+    <a asp-page="Index">返回帖子</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

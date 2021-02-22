@@ -1,0 +1,134 @@
+﻿@page
+@model WebApplication1.Pages.Files.IndexModel
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Xsrf
+@functions
+{
+    public string GetAntiXsrfRequestToken()
+    {
+        return Xsrf.GetAndStoreTokens(Model.HttpContext).RequestToken;
+    }
+}
+
+@{
+    ViewData["Title"] = "文件";
+}
+<br />
+<h3> 文件一览</h3><br />
+
+@*<p>
+    <a asp-page="Create">创建一个新的列表</a>
+</p>*@
+@*<form>
+    <p>
+        按<strong>姓名/学号</strong>搜索：<input type="text" asp-for="SearchString" class="form-control" style="width:20%;height:30px;margin-top:10px"/>
+        <input type="submit" value="搜索" class="btn btn-primary"style="margin-top:10px"/>
+    </p>
+    
+</form>*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FileList[0].FileName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileList[0].Length)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileList[0].LastWriteTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FileList[0].VirtualRoute)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.DictionaryList)
+        {
+            <tr>
+                <td>
+                    @*<form method="post">
+                            <input type="submit" class="@item.type" value="@Html.DisplayFor(modelItem => item.FileName)" asp-route-data="@item.VirtualRoute" asp-page-handler="Click" />
+                        </form>*@
+                    <div class="@item.type">@Html.DisplayFor(modelItem => item.FileName)</div>
+                    <form method="post" style="display:inline">
+                        <input class="ClickButton" type="submit" value="" asp-route-data="@item.VirtualRoute" asp-page-handler="Click" />
+                    </form>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Length)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastWriteTime)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.VirtualRoute)
+                </td>
+
+            </tr>
+        }
+        @foreach (var item in Model.FileList)
+        {
+            <tr>
+                <td>
+                    <form method="post">
+                        <a href="@IndexModel.virtualLocation/@item.VirtualRoute.Replace("\\","/")" class="@item.type" style="text-decoration:none" target="_blank">@Html.DisplayFor(modelItem => item.FileName)</a>
+                        @*asp-route-data="@item.VirtualRoute" asp-page-handler="Click"*@
+
+                    </form>
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Length)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastWriteTime)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.VirtualRoute)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<style>
+    .File
+    {
+        border:0;
+        background-color:inherit;
+    }
+    .Directory {
+        border: 0;
+        background-color: inherit;
+        color:grey;
+    }
+    .ClickButton {
+        border: 0;
+        background-color: inherit;
+        width:100%;
+        position:relative;
+    }
+</style>
+<script>
+    function ClickFunc(d) {
+        
+            window.open("@IndexModel.virtualLocation" + "/" + d);
+    }
+    function onloadFilesIndex() {
+        var button = document.getElementsByClassName("ClickButton");
+        var fileTexts = document.getElementsByClassName("Directory");
+
+        for (var i = 0; i < fileTexts.length; i++) {
+            var height = fileTexts[i].offsetHeight;
+            button[i].style.height = height;           
+            button[i].style.bottom = height;
+        }
+    }
+
+</script>
